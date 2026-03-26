@@ -4,6 +4,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';
 import stellarRoutes from './routes/stellar.js';
+import multiSigRoutes from './routes/multiSig.js';
 import { initWebSocket } from './services/websocket.js';
 import eventsRoutes from './routes/events.js';
 import securityRoutes from './routes/security.js';
@@ -43,6 +44,7 @@ await auditLogger.initialize();
 // Swagger Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/stellar', stellarRoutes);
+app.use('/api/multisig', multiSigRoutes);
 app.use('/api/events', eventsRoutes);
 app.use('/api/security', securityRoutes);
 app.use('/api/load-testing', loadTestingRoutes);
