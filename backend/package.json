@@ -12,6 +12,7 @@
     "load-test:concurrent": "k6 run load-tests/k6/scenarios/concurrent-users.js",
     "test:integration": "vitest run tests/stellar.integration.test.js",
     "test:db": "vitest run tests/database.framework.test.js"
+    "test:integration": "vitest run tests/stellar.integration.test.js"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "^12.3.0",
@@ -25,6 +26,8 @@
     "speakeasy": "^2.0.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
+    "winston": "^3.19.0",
+    "winston-daily-rotate-file": "^5.0.0",
     "ws": "^8.20.0"
   }
 }
