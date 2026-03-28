@@ -1,6 +1,7 @@
 {
   "name": "stellar-remittance",
   "version": "1.0.0",
+  "type": "module",
   "description": "Cross-border remittance platform on Stellar blockchain",
   "private": true,
   "workspaces": [
@@ -17,7 +18,12 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "test:parallel": "vitest run --workers 4",
-    "test:mobile": "cd mobile-tests && node run-tests.js"
+    "test:mobile": "cd mobile-tests && node run-tests.js",
+    "test:environments": "vitest run --config vitest.environments.config.js",
+    "env:provision": "node test-environments/cli.js provision",
+    "env:status": "node test-environments/cli.js status",
+    "env:cleanup": "node test-environments/cli.js cleanup",
+    "env:list": "node test-environments/cli.js list"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "6.9.1",
