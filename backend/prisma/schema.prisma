@@ -12,8 +12,10 @@ model User {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   settings     Setting?
-  sentTxs      Transaction[] @relation("sender")
-  receivedTxs  Transaction[] @relation("recipient")
+  sentTxs          Transaction[]   @relation("sender")
+  receivedTxs      Transaction[]   @relation("recipient")
+  sentStreams      PaymentStream[] @relation("streamSender")
+  receivedStreams  PaymentStream[] @relation("streamRecipient")
 }
 
 model Transaction {
@@ -37,4 +39,32 @@ model Setting {
   defaultAsset      String   @default("XLM")
   notificationsOn   Boolean  @default(true)
   updatedAt         DateTime @updatedAt
+}
+
+enum StreamStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model PaymentStream {
+  id              String       @id @default(uuid())
+  senderId        String
+  sender          User         @relation("streamSender", fields: [senderId], references: [id])
+  recipientId     String
+  recipient       User         @relation("streamRecipient", fields: [recipientId], references: [id])
+  assetCode       String       @default("XLM")
+  rateAmount      Decimal      // amount to stream per interval
+  intervalSeconds Int          @default(60)
+  startTime       DateTime     @default(now())
+  endTime         DateTime?
+  lastProcessedAt DateTime     @default(now())
+  totalStreamed   Decimal      @default(0)
+  status          StreamStatus @default(ACTIVE)
+  failureCount    Int          @default(0)
+  metadata        Json?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
