@@ -21,6 +21,7 @@ import { TransactionHistory } from './components/TransactionHistory';
 import { FeeDisplay } from './components/FeeDisplay';
 import { logError } from './utils/errorLogger';
 import { ImportAccountForm } from './components/ImportAccountForm';
+import { FileUpload } from './components/FileUpload';
 import { useTheme } from './contexts/ThemeContext';
 import { useAppState, useAppDispatch, A } from './store/index.js';
 
@@ -492,6 +493,15 @@ function App() {
             </AnimatePresence>
           </motion.section>
 
+            {/* File Upload */}
+            <motion.div className="section" variants={v.fadeSlide}>
+              <h3>File Upload</h3>
+              <FileUpload />
+            </motion.div>
+
+          </motion.div>
+        )}
+      </AnimatePresence>
           <AnimatePresence>
             {account && (
               <motion.div variants={v.stagger} initial="hidden" animate="visible" exit="exit">
