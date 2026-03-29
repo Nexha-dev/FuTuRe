@@ -28,6 +28,8 @@ import { startScheduler } from './backup/manager.js';
 import cacheRoutes from './routes/cache.js';
 import recoveryRoutes from './routes/recovery.js';
 import { eventMonitor } from './eventSourcing/index.js';
+import streamingRoutes from './routes/streaming.js';
+import { processActiveStreams } from './services/streaming.js';
 import { auditLogger } from './security/index.js';
 import { getConfig } from './config/env.js';
 import { createRateLimiter } from './middleware/rateLimiter.js';
@@ -98,6 +100,7 @@ app.use('/api/path-payment', pathPaymentRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/backup', backupRoutes);
 app.use('/api/cache', cacheRoutes);
+app.use('/api/streaming', streamingRoutes);
 app.use('/api/recovery', recoveryRoutes);
 
 // 404 handler for undefined routes
@@ -127,5 +130,18 @@ httpServer.listen(PORT, () => {
     logger.info('server.envFiles', { files: meta.loadedEnvFiles.map(p => p.split('/').pop()).join(', ') });
   }
   logger.info('server.started', { port: PORT, network: process.env.STELLAR_NETWORK });
+
+  // Start background streaming payment worker
+  const STREAM_INTERVAL = 60 * 1000; // Check every minute
+  setInterval(async () => {
+    try {
+      const workerSecret = process.env.STREAM_WORKER_SECRET;
+      if (workerSecret) {
+        await processActiveStreams(workerSecret);
+      }
+    } catch (err) {
+      logger.error('streaming.worker.failed', { error: err.message });
+    }
+  }, STREAM_INTERVAL);
   startScheduler();
 });

@@ -3,6 +3,7 @@ import cors from 'cors';
 import stellarRoutes from '../../src/routes/stellar.js';
 import authRoutes from '../../src/routes/auth.js';
 import transactionRoutes from '../../src/routes/transactions.js';
+import streamingRoutes from '../../src/routes/streaming.js';
 
 // Setup environment for testing
 process.env.NODE_ENV = 'test';
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/stellar', stellarRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/streaming', streamingRoutes);
 
 // Health check
 app.get('/health', (_req, res) => res.json({ status: 'ok', network: 'testnet' }));
