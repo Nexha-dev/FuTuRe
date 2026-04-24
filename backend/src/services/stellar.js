@@ -1,6 +1,7 @@
 import * as StellarSDK from '@stellar/stellar-sdk';
 import { eventMonitor } from '../eventSourcing/index.js';
 import { getConfig } from '../config/env.js';
+import { getIssuer } from '../config/assets.js';
 import logger from '../config/logger.js';
 import prisma from '../db/client.js';
 
@@ -309,7 +310,7 @@ export async function getFeeStats() {
   // Fetch XLM/USD price via Stellar SDEX (XLM/USDC order book)
   let xlmUsd = null;
   try {
-    const usdc = new StellarSDK.Asset('USDC', 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN');
+    const usdc = new StellarSDK.Asset('USDC', getIssuer('USDC'));
     const book = await getHorizonServer().orderbook(StellarSDK.Asset.native(), usdc).limit(1).call();
     const ask = parseFloat(book.asks?.[0]?.price);
     if (ask > 0) xlmUsd = ask;
