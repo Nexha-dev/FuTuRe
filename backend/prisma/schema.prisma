@@ -14,8 +14,8 @@ model User {
   settings               Setting?
   sentTxs                Transaction[]           @relation("sender")
   receivedTxs            Transaction[]           @relation("recipient")
-  sentStreams             PaymentStream[]         @relation("streamSender")
-  receivedStreams         PaymentStream[]         @relation("streamRecipient")
+  sentStreams            PaymentStream[]         @relation("streamSender")
+  receivedStreams        PaymentStream[]         @relation("streamRecipient")
   notifications          Notification[]
   notificationPreference NotificationPreference?
   kycRecord              KYCRecord?
